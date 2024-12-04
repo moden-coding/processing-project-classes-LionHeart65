@@ -4,15 +4,16 @@ import processing.core.PApplet;
 
 public class App extends PApplet {
 
+    Player player;
     int charX = 0;
     int charY = 0;
     int lr = 1; // is char facing left or right, 1 is right, -1 is left
     int ud = 1; // is char facing up or down, 1 is up, -1 is down
     float speed = 1; // speed of the player, adjusted to move diagonally
     float speedStat = 3; // raw speed of the player
-    int bg = color(59, 47, 30);
+    int bg = color(46, 89, 61);
     float shootAngle = 0;
-    int gameCode = 0; // what scene is the game on, 0 is menu, 1 is instructions, 2 is game
+    int gameCode = 2; // what scene is the game on, 0 is menu, 1 is instructions, 2 is game
     int hp = 100;
     ArrayList<Enemy> Enemies = new ArrayList<>();
     boolean moveXPos = false; // is the player moving in these directions
@@ -22,9 +23,17 @@ public class App extends PApplet {
     int damage = 1;
     int iFrames = 0; // frames since player lost a life.
     boolean lostLife = false; // has the player lost a life within 3 secs
+    static boolean swung;
+    int swingTime = 15;
+    int swingFrames = 0;
 
     
-
+    public static void swing() {
+        swung = true;
+    }
+    public static boolean getSwung() {
+        return swung;
+    }
     public void settings() { // Sets the background size
         size(1500, 1000);
     }
@@ -32,6 +41,7 @@ public class App extends PApplet {
         charX = width / 2; // sets player starting coords.
         charY = height / 2;
         background(bg);
+        player = new Player(width / 2, height / 2, this);
 
     }
 
@@ -51,6 +61,7 @@ public class App extends PApplet {
         return coords;
     }
 
+;
     public void draw() {
         // decides which scene to show based on game code value.
         switch (gameCode) {
@@ -63,51 +74,37 @@ public class App extends PApplet {
         }
     }
 
+    int num = 1;
     // main game function, where the playing happens. 1
     public void play() {
-
         background(bg);
-        charAndWea();
-        fill(0);
-        textSize(35);
+        if (swung) {
+            swingFrames++;
+            if (swingFrames >= swingTime) {
+                swingFrames = 0;
+                swung = false;
+            }
+        }
 
+        if (num == 1) {
+            Enemies.add(new Enemy(100, 500, this));
+            num++;
+        }
         
-        // moves the player
-        if (moveXPos) {// D
-            charX += speed;
-        }
-        if (moveXNeg) {// A
-            charX -= speed;
-        }
-        if (moveYPos) { // S
-            charY += speed;
-        }
-        if (moveYNeg) { // W
-            charY -= speed;
-        }
-        // prevents the player from going super fast if moving diagonally.
-        if ((moveXPos || moveXNeg) && (moveYPos || moveYNeg)) {
-            speed = speedStat / sqrt(2);
-        } else {
-            speed = speedStat;
-        }
-
+        player.move();
         // handles all things enemy related
         for (int i = 0; i < Enemies.size(); i++) {
-
             Enemies.get(i).move(charX, charY);
-
-            // allows player to lose hearts, if player is within 50 pixels and isn't
+            // allows player to lose hp, if player is within 50 pixels and isn't
             // invincible
             if (dist(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), charX, charY) < 50 && !lostLife) {
                 hp -= 10;
                 lostLife = true;
             }
-
-
+            if (swung && dist(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), charX, charY) < 50) {
+                Enemies.remove(i);
+            }
         }
-        // next two if statments gives three seconds of invincibility after losing a
-        // life
 
         // if the player is invincable, make a timer increase
         if (lostLife) {
@@ -178,60 +175,12 @@ public class App extends PApplet {
 
     // handles all keyboard inputs
     public void keyPressed() {
-
-        // next 4 if statments make the char move, the gun shoot the right way, and the
-        // char and gun face
-        // the right way.
-        if (key == 'w') {
-
-            moveYNeg = true;
-            ud = 1;
-
-            // shootAngle = (float) 4.71239;
-
-        } else if (key == 's') {
-
-            moveYPos = true;
-            ud = -1;
-
-            // shootAngle = (float) 1.5708;
-
-        } else if (key == 'a') {
-            moveXNeg = true;
-            lr = -1;
-            ud = 0;
-
-            // shootAngle = (float) 3.14159;
-
-        } else if (key == 'd') {
-            moveXPos = true;
-            lr = 1;
-            ud = 0;
-
-            // shootAngle = 0;
-
-            // shoots if the spacebar is pressed
-        } else if (key == ' ') {
-        }
-
+        player.keyPressed(key);
     }
 
     // when movement keys are lifted, stops the char from moving
     public void keyReleased() {
-        if (key == 'w') {
-
-            moveYNeg = false;
-
-        } else if (key == 's') {
-
-            moveYPos = false;
-
-        } else if (key == 'a') {
-            moveXNeg = false;
-
-        } else if (key == 'd') {
-            moveXPos = false;
-        }
+        player.keyReleased(key);
     }
 
     // handles when the mouse is clicked
