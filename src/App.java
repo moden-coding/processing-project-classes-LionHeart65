@@ -5,8 +5,8 @@ import processing.core.PApplet;
 public class App extends PApplet {
 
     Player player;
-    int charX = 0;
-    int charY = 0;
+    static int charX = 0;
+    static int charY = 0;
     int lr = 1; // is char facing left or right, 1 is right, -1 is left
     int ud = 1; // is char facing up or down, 1 is up, -1 is down
     float speed = 1; // speed of the player, adjusted to move diagonally
@@ -74,6 +74,10 @@ public class App extends PApplet {
         }
     }
 
+    public static void syncCoords(int X, int Y) {
+        charX = X;
+        charY = Y;
+    }
     int num = 1;
     // main game function, where the playing happens. 1
     public void play() {
@@ -142,37 +146,6 @@ public class App extends PApplet {
         fill(255);
     }
 
-    // creates the character and the gun on the screen
-    public void charAndWea() {
-        fill(145, 125, 80);
-        rect(charX, charY, 20, 50);
-        fill(181, 167, 91);
-        ellipse(charX + 10, charY, 15, 15);
-        // makes the character and gun face the right ways
-        fill(117, 112, 99);
-        if (ud == 1) {
-            rect(charX + 5, charY + 20, 5, -30);
-        } else if (ud == -1) {
-            rect(charX + 5, charY + 20, 5, 30);
-
-        } else if (ud == 0) {
-            rect(charX + 5, charY + 20, 30 * lr, 5);
-        }
-
-        // what to do when player runs out of hearts; resets all stats, the char pos,
-        // and removes all enemies and
-        if (hp <= 0) {
-            iFrames = 0;
-            lostLife = false;
-            gameCode = 0;
-            charX = width / 2;
-            charY = height / 2;
-            hp = 100;
-            Enemies.clear();
-        }
-        fill(255);
-    }
-
     // handles all keyboard inputs
     public void keyPressed() {
         player.keyPressed(key);
@@ -191,8 +164,9 @@ public class App extends PApplet {
                 gameCode = 2; // starts game
             }
         }
-
+        System.out.println("X " + mouseX + " Y " + mouseY);
     }
+
     public static void main(String[] args) {
         PApplet.main("App");
     }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class Player {
@@ -13,15 +15,20 @@ public class Player {
     private PApplet c;
     private float PI = 3.1415926f;
     private Sword sword;
+    private ArrayList<String[]> inventory = new ArrayList<>();
+    private int inventorySlot = 1;
 
     public Player(int X, int Y, PApplet c) {
         this.X = X;
         this.Y = Y;
         this.c = c;
         sword = new Sword(X, Y, c);
+        inventory.add(new String[] { "Sword", "1", "1", });
+
     }
 
     public void move() {
+        App.syncCoords(X, Y);
         // Update position based on movement states
         if (moveXPos) {
             X += speed;
@@ -47,7 +54,7 @@ public class Player {
         } else {
             udPlayer();
         }
-        
+
     }
 
     public void lrPlayer() {
@@ -57,51 +64,65 @@ public class Player {
         c.fill(181, 167, 91);
         c.ellipse(X + 10, Y, 15, 15);
 
-        // Draw the gun based on direction
-
-
         if (App.getSwung() == false) {
             if (lr == -1) {
-                sword.render(X+4, Y + 5, -5, 35);
+                sword.render(X + 4, Y + 5, -5, 35);
             } else if (lr == 1) {
-                sword.render(X+16, Y + 5, 5, 35);
+                sword.render(X + 16, Y + 5, 5, 35);
             }
         } else {
             if (lr == -1) {
-                sword.render(X+4, Y + 20, -35, 5);
+                sword.render(X + 4, Y + 20, -35, 5);
             } else if (lr == 1) {
-                sword.render(X+16, Y + 20, 35, 5);
+                sword.render(X + 16, Y + 20, 35, 5);
             }
         }
+        // inventory
+        c.stroke(0); // Set the stroke color to black (border)
+        c.strokeWeight(3); // Set the thickness of the border
+        for (int i = 0; i < 9; i++) {
+            c.rect(525 + 55 * i, 900, 50, 50);
+        }
+        c.fill(179, 169, 116);
+
+        c.rect(525 + 55 * inventorySlot, 900, 50, 50);
+
+        c.strokeWeight(1);
+    }
+
+    public void udPlayer() {
+        // Draw the player
+        c.fill(145, 125, 80);
+        c.rect(X, Y, 50, 20);
+        c.fill(181, 167, 91);
+        c.ellipse(X - 3, Y + 10, 15, 15);
+
+        // Draw the gun based on direction
+
+        if (App.getSwung() == false) {
+            if (ud == -1) {
+                sword.render(X + 45, Y + 13, -35, 5);
+            } else if (ud == 1) {
+                sword.render(X + 8, Y - 2, 35, 5);
+            }
+        } else {
+            if (ud == -1) {
+                sword.render(X + 16, Y + 15, -5, 35);
+            } else if (ud == 1) {
+                sword.render(X + 16, Y + 5, 5, -35);
+            }
+        }
+        c.strokeWeight(3); // Set the thickness of the border
+
+        for (int i = 0; i < 9; i++) {
+            c.rect(525 + 55 * i, 900, 50, 50);
+        }
+        c.fill(179, 169, 116);
+        c.rect(525 + 55 * inventorySlot, 900, 50, 50);
+        c.strokeWeight(1);
 
     }
-    
-    public void udPlayer() {
-            // Draw the player
-            c.fill(145, 125, 80);
-            c.rect(X, Y, 50, 20);
-            c.fill(181, 167, 91);
-            c.ellipse(X-3, Y+10, 15, 15);
-    
-            // Draw the gun based on direction
-    
-    
-            if (App.getSwung() == false) {
-                if (ud == -1) {
-                    sword.render(X+45, Y+13, -35, 5);
-                } else if (ud == 1) {
-                    sword.render(X+8, Y - 2, 35, 5);
-                }
-            } else {
-                if (ud == -1) {
-                    sword.render(X+16, Y +15, -5, 35);
-                } else if (ud == 1) {
-                    sword.render(X+16, Y + 5, 5, -35);
-                }
-            }
-    
-        }
-    
+
     public void swing() {
         App.swing();
     }
@@ -122,10 +143,14 @@ public class Player {
             moveXPos = true;
             lr = 1;
             ud = 0;
-        }
-        if (key == ' ') {
+        } else if (key == ' ') {
             swing();
+        } else if (key >= '1' && key <= '9') { // Check if the key is between '1' and '9'
+            inventorySlot = key - '1'; // Convert char to int (e.g., '1' -> 1)
+            //chatGPT made key switch logic
         }
+    
+
     }
 
     public void keyReleased(char key) {
@@ -140,4 +165,5 @@ public class Player {
             moveXPos = false;
         }
     }
+
 }
