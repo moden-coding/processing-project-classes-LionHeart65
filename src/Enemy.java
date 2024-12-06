@@ -11,12 +11,21 @@ public class Enemy {
     private float selfY = 0;
     private int health = values(0);
     private int[] colors = { values(1), values(2), values(3) }; // color of enemies. should be static?
+    private int xSize = values(4);
+    private int ySize = values(5);
 
     public Enemy(int X, int Y, PApplet c) {
         this.c = c;
         this.selfX = X;
         this.selfY = Y;
 
+    }
+
+    public int getXSize() {
+        return xSize;
+    }
+    public int getYSize() {
+        return ySize;
     }
 
     // can't set different values in subclasses, so values are set here, 
@@ -34,6 +43,10 @@ public class Enemy {
             case 3:
                 return 4;
             // need to return something
+            case 4:
+                return 10;
+            case 5:
+                return 40;
             default:
                 return 0;
 

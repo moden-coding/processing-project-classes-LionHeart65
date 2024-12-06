@@ -105,7 +105,7 @@ public class App extends PApplet {
                 hp -= 10;
                 lostLife = true;
             }
-            if (swung && dist(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), charX, charY) < 50) {
+            if (swung && player.checkHit(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), Enemies.get(i).getXSize(), Enemies.get(i).getYSize())) {
                 Enemies.remove(i);
             }
         }

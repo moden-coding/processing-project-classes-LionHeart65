@@ -15,7 +15,7 @@ public class Player {
     private PApplet c;
     private float PI = 3.1415926f;
     private Sword sword;
-    private ArrayList<String[]> inventory = new ArrayList<>();
+    private ArrayList<InventorySlot> inventory = new ArrayList<>();
     private int inventorySlot = 1;
 
     public Player(int X, int Y, PApplet c) {
@@ -23,12 +23,12 @@ public class Player {
         this.Y = Y;
         this.c = c;
         sword = new Sword(X, Y, c);
-        inventory.add(new String[] { "Sword", "1", "1", });
-
+        inventory.add(new InventorySlot(sword, 0, 1));
     }
 
     public void move() {
         App.syncCoords(X, Y);
+        sword.setPlayerValues(X, Y, lr, ud);
         // Update position based on movement states
         if (moveXPos) {
             X += speed;
@@ -54,7 +54,7 @@ public class Player {
         } else {
             udPlayer();
         }
-
+        loadInventory();
     }
 
     public void lrPlayer() {
@@ -64,30 +64,6 @@ public class Player {
         c.fill(181, 167, 91);
         c.ellipse(X + 10, Y, 15, 15);
 
-        if (App.getSwung() == false) {
-            if (lr == -1) {
-                sword.render(X + 4, Y + 5, -5, 35);
-            } else if (lr == 1) {
-                sword.render(X + 16, Y + 5, 5, 35);
-            }
-        } else {
-            if (lr == -1) {
-                sword.render(X + 4, Y + 20, -35, 5);
-            } else if (lr == 1) {
-                sword.render(X + 16, Y + 20, 35, 5);
-            }
-        }
-        // inventory
-        c.stroke(0); // Set the stroke color to black (border)
-        c.strokeWeight(3); // Set the thickness of the border
-        for (int i = 0; i < 9; i++) {
-            c.rect(525 + 55 * i, 900, 50, 50);
-        }
-        c.fill(179, 169, 116);
-
-        c.rect(525 + 55 * inventorySlot, 900, 50, 50);
-
-        c.strokeWeight(1);
     }
 
     public void udPlayer() {
@@ -96,24 +72,12 @@ public class Player {
         c.rect(X, Y, 50, 20);
         c.fill(181, 167, 91);
         c.ellipse(X - 3, Y + 10, 15, 15);
+    }
 
-        // Draw the gun based on direction
-
-        if (App.getSwung() == false) {
-            if (ud == -1) {
-                sword.render(X + 45, Y + 13, -35, 5);
-            } else if (ud == 1) {
-                sword.render(X + 8, Y - 2, 35, 5);
-            }
-        } else {
-            if (ud == -1) {
-                sword.render(X + 16, Y + 15, -5, 35);
-            } else if (ud == 1) {
-                sword.render(X + 16, Y + 5, 5, -35);
-            }
-        }
-        c.strokeWeight(3); // Set the thickness of the border
-
+    public void loadInventory() {
+        boolean itemInSlot = false;
+        c.stroke(0);
+        c.strokeWeight(3);
         for (int i = 0; i < 9; i++) {
             c.rect(525 + 55 * i, 900, 50, 50);
         }
@@ -121,6 +85,27 @@ public class Player {
         c.rect(525 + 55 * inventorySlot, 900, 50, 50);
         c.strokeWeight(1);
 
+        for (InventorySlot slot : inventory) {
+            int slotNum = slot.getSlot();
+            c.image(slot.getImg(), 533f + 55 * slotNum, 907.5f, 35f, 35f);
+            if (slot.getSlot() == inventorySlot) {
+                slot.getItem().render();
+            } else {
+                slot.getItem().hide();
+            }
+        }
+    }
+
+    public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
+        if (inventory.size() - 1 >= inventorySlot) {
+            if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Weapon) {
+                Interfaces.Weapon weapon = (Interfaces.Weapon) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thing
+                return weapon.checkCollision(X, Y, enemyX, enemyY);
+            }
+            return false;
+
+        }
+        return false;
     }
 
     public void swing() {
@@ -147,9 +132,8 @@ public class Player {
             swing();
         } else if (key >= '1' && key <= '9') { // Check if the key is between '1' and '9'
             inventorySlot = key - '1'; // Convert char to int (e.g., '1' -> 1)
-            //chatGPT made key switch logic
+            // chatGPT made key switch logic
         }
-    
 
     }
 
