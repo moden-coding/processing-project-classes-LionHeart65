@@ -91,7 +91,7 @@ public class App extends PApplet {
         }
 
         if (num == 1) {
-            Enemies.add(new Enemy(100, 500, this));
+            Enemies.add(new Enemy(500, 500, this));
             num++;
         }
         

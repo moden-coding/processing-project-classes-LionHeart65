@@ -99,7 +99,8 @@ public class Player {
     public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
         if (inventory.size() - 1 >= inventorySlot) {
             if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Weapon) {
-                Interfaces.Weapon weapon = (Interfaces.Weapon) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thing
+                Interfaces.Weapon weapon = (Interfaces.Weapon) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thingw  
+                // System.out.println("X " + X + " Y " + Y + " eX " + enemyX + " eY " + enemyY);
                 return weapon.checkCollision(X, Y, enemyX, enemyY);
             }
             return false;

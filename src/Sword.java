@@ -21,16 +21,61 @@ public class Sword implements Weapon {
         this.img = c.loadImage("src/Assets/swords.png");
     }
 
+    // false
+    // true
+    // true
+    // false
+
+    // false
+    // true
+    // Y
+    // false
+    // true
+
+    // chatGPT techanccly made this, but i had to panstakily get it poit of it step by step and the negative value handling i did myself.
     public boolean checkCollision(int enemyX, int enemyY, int enemyWidth, int enemyHeight) {
-        if (X < enemyX + enemyWidth &&
-                X + xSize > enemyX &&
-                Y < enemyY + enemyHeight &&
-                Y + ySize > enemyY) {
-            return true;
-        } else {
-            return false;
+        int x1Min = X;
+        int x1Max = X + xSize;
+        int y1Min = Y;
+        int y1Max = Y + ySize;
+
+        if (x1Min > x1Max) {
+            int temp = x1Min;
+            x1Min = x1Max;
+            x1Max = temp;
         }
+        if (y1Min > y1Max) {
+            int temp = y1Min;
+            y1Min = y1Max;
+            y1Max = temp;
+        }
+
+        // Calculate bounds for Square 2
+        int x2Min = enemyX;
+        int x2Max = enemyX + enemyWidth;
+        int y2Min = enemyY;
+        int y2Max = enemyY + enemyHeight;
+
+        if (x2Min > x2Max) {
+            int temp = x2Min;
+            x2Min = x2Max;
+            x2Max = temp;
+        }
+        if (y2Min > y2Max) {
+            int temp = y2Min;
+            y2Min = y2Max;
+            y2Max = temp;
+        }
+
+        boolean xOverlap = x1Max >= x2Min && x1Min <= x2Max;
+        boolean yOverlap = y1Max >= y2Min && y1Min <= y2Max;
+
+        return xOverlap && yOverlap;
+
+
     }
+
+
 
     private void setValues(int X, int Y, int width, int height) {
         this.X = X;
