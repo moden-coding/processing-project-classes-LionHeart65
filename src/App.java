@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import Interfaces.Obstacle;
 import processing.core.PApplet;
 
 public class App extends PApplet {
@@ -23,9 +24,12 @@ public class App extends PApplet {
     int damage = 1;
     int iFrames = 0; // frames since player lost a life.
     boolean lostLife = false; // has the player lost a life within 3 secs
+    static boolean weaSwung;
     static boolean swung;
     int swingTime = 15;
     int swingFrames = 0;
+    ArrayList<Obstacle> obstacles = new ArrayList<>();
+    
 
     
     public static void swing() {
@@ -34,6 +38,15 @@ public class App extends PApplet {
     public static boolean getSwung() {
         return swung;
     }
+
+    public static void weaSwing() {
+        weaSwung = true;
+        swing();
+    }
+    public static boolean getWeaSwung() {
+        return weaSwung;
+    }
+
     public void settings() { // Sets the background size
         size(1500, 1000);
     }
@@ -42,6 +55,7 @@ public class App extends PApplet {
         charY = height / 2;
         background(bg);
         player = new Player(width / 2, height / 2, this);
+
 
     }
 
@@ -86,12 +100,15 @@ public class App extends PApplet {
             swingFrames++;
             if (swingFrames >= swingTime) {
                 swingFrames = 0;
+                weaSwung = false;
                 swung = false;
             }
         }
 
+
         if (num == 1) {
             Enemies.add(new Enemy(500, 500, this));
+            obstacles.add(new Rock(randCoord()[0], randCoord()[1], this));
             num++;
         }
         
@@ -105,7 +122,7 @@ public class App extends PApplet {
                 hp -= 10;
                 lostLife = true;
             }
-            if (swung && player.checkHit(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), Enemies.get(i).getXSize(), Enemies.get(i).getYSize())) {
+            if (weaSwung && player.checkHit(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), Enemies.get(i).getXSize(), Enemies.get(i).getYSize())) {
                 Enemies.remove(i);
             }
         }
@@ -120,7 +137,10 @@ public class App extends PApplet {
             lostLife = false;
             iFrames = 0;
         }
-
+        for (Obstacle obs : obstacles) {
+            obs.render();
+            
+        }
     }
 
     public void menu() {

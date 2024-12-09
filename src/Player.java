@@ -13,8 +13,7 @@ public class Player {
     private boolean moveYPos = false;
     private boolean moveYNeg = false;
     private PApplet c;
-    private float PI = 3.1415926f;
-    private Sword sword;
+    // private Sword sword;
     private ArrayList<InventorySlot> inventory = new ArrayList<>();
     private int inventorySlot = 1;
 
@@ -22,13 +21,15 @@ public class Player {
         this.X = X;
         this.Y = Y;
         this.c = c;
-        sword = new Sword(X, Y, c);
+        Sword sword = new Sword(X, Y, c);
+        Pick pickaxe = new Pick(X, Y, c);
         inventory.add(new InventorySlot(sword, 0, 1));
+        inventory.add(new InventorySlot(pickaxe, 1, 1));
     }
 
     public void move() {
         App.syncCoords(X, Y);
-        sword.setPlayerValues(X, Y, lr, ud);
+        // sword.setPlayerValues(X, Y, lr, ud);
         // Update position based on movement states
         if (moveXPos) {
             X += speed;
@@ -75,7 +76,6 @@ public class Player {
     }
 
     public void loadInventory() {
-        boolean itemInSlot = false;
         c.stroke(0);
         c.strokeWeight(3);
         for (int i = 0; i < 9; i++) {
@@ -93,15 +93,19 @@ public class Player {
             } else {
                 slot.getItem().hide();
             }
+            if (slot.getItem() instanceof Tool) {
+                Tool tool = (Tool) slot.getItem();
+                tool.setPlayerValues(X, Y, lr, ud);
+            }
         }
     }
 
     public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
         if (inventory.size() - 1 >= inventorySlot) {
-            if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Weapon) {
-                Interfaces.Weapon weapon = (Interfaces.Weapon) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thingw  
+            if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Tools) {
+                Interfaces.Tools tool = (Interfaces.Tools) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thingw  
                 // System.out.println("X " + X + " Y " + Y + " eX " + enemyX + " eY " + enemyY);
-                return weapon.checkCollision(X, Y, enemyX, enemyY);
+                return tool.checkCollision(X, Y, enemyX, enemyY);
             }
             return false;
 
@@ -110,7 +114,12 @@ public class Player {
     }
 
     public void swing() {
-        App.swing();
+
+        if (inventory.get(inventorySlot).getItem().getType() == "weapon") {
+            App.weaSwing();
+        } else {
+            App.swing();
+        }
     }
 
     public void keyPressed(char key) {
