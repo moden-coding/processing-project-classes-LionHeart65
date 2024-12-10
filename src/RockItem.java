@@ -12,6 +12,10 @@ public class RockItem implements Interfaces.Item {
 
     }
 
+    public int getDamage() {
+        return 0;
+    }
+
     public String getType() {
         return "we";
     }

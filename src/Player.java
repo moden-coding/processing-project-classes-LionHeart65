@@ -103,8 +103,8 @@ public class Player {
     public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
         if (inventory.size() - 1 >= inventorySlot) {
             if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Tools) {
+                
                 Interfaces.Tools tool = (Interfaces.Tools) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thingw  
-                // System.out.println("X " + X + " Y " + Y + " eX " + enemyX + " eY " + enemyY);
                 return tool.checkCollision(X, Y, enemyX, enemyY);
             }
             return false;
@@ -115,11 +115,8 @@ public class Player {
 
     public void swing() {
 
-        if (inventory.get(inventorySlot).getItem().getType() == "weapon") {
-            App.weaSwing();
-        } else {
+        
             App.swing();
-        }
     }
 
     public void keyPressed(char key) {
@@ -139,12 +136,16 @@ public class Player {
             lr = 1;
             ud = 0;
         } else if (key == ' ') {
-            swing();
+            App.swing();
         } else if (key >= '1' && key <= '9') { // Check if the key is between '1' and '9'
             inventorySlot = key - '1'; // Convert char to int (e.g., '1' -> 1)
             // chatGPT made key switch logic
         }
 
+    }
+
+    public InventorySlot getInventory() {
+        return inventory.get(inventorySlot);
     }
 
     public void keyReleased(char key) {

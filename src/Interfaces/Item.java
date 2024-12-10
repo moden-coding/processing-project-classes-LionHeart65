@@ -6,5 +6,6 @@ public interface Item {
     PImage getImg();
     void hide();
     String getType();
+    int getDamage();
 }
 

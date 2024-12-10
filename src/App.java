@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import Interfaces.Item;
 import Interfaces.Obstacle;
 import processing.core.PApplet;
 
@@ -24,7 +25,6 @@ public class App extends PApplet {
     int damage = 1;
     int iFrames = 0; // frames since player lost a life.
     boolean lostLife = false; // has the player lost a life within 3 secs
-    static boolean weaSwung;
     static boolean swung;
     int swingTime = 15;
     int swingFrames = 0;
@@ -39,13 +39,8 @@ public class App extends PApplet {
         return swung;
     }
 
-    public static void weaSwing() {
-        weaSwung = true;
-        swing();
-    }
-    public static boolean getWeaSwung() {
-        return weaSwung;
-    }
+    
+    
 
     public void settings() { // Sets the background size
         size(1500, 1000);
@@ -100,7 +95,6 @@ public class App extends PApplet {
             swingFrames++;
             if (swingFrames >= swingTime) {
                 swingFrames = 0;
-                weaSwung = false;
                 swung = false;
             }
         }
@@ -113,17 +107,24 @@ public class App extends PApplet {
         }
         
         player.move();
+
         // handles all things enemy related
         for (int i = 0; i < Enemies.size(); i++) {
             Enemies.get(i).move(charX, charY);
+            System.out.println("Enemy X Position: " + Enemies.get(i).getPos('X') + ", Enemy Y Position: " + Enemies.get(i).getPos('Y'));
+
             // allows player to lose hp, if player is within 50 pixels and isn't
             // invincible
             if (dist(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), charX, charY) < 50 && !lostLife) {
                 hp -= 10;
                 lostLife = true;
             }
-            if (weaSwung && player.checkHit(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), Enemies.get(i).getXSize(), Enemies.get(i).getYSize())) {
-                Enemies.remove(i);
+            if (swung && player.checkHit(Enemies.get(i).getPos('X'), Enemies.get(i).getPos('Y'), Enemies.get(i).getXSize(), Enemies.get(i).getYSize())) {
+                Item item = player.getInventory().getItem();
+                if (Enemies.get(i).hit(item.getDamage(), item.getType())) {
+                    Enemies.remove(i);
+                }
+
             }
         }
 
@@ -139,7 +140,12 @@ public class App extends PApplet {
         }
         for (Obstacle obs : obstacles) {
             obs.render();
-            
+            if (swung && player.checkHit(obs.getX(), obs.getY(), obs.getXSize(), obs.getYSize())) {
+                System.out.println("swung");
+                Item item = player.getInventory().getItem();
+                obs.hit(item.getDamage(), item.getType());
+            }
+
         }
     }
 

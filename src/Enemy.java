@@ -13,6 +13,9 @@ public class Enemy {
     private int[] colors = { values(1), values(2), values(3) }; // color of enemies. should be static?
     private int xSize = values(4);
     private int ySize = values(5);
+    private int iFrames = 31;
+    private int frames = 0;
+    private boolean onCooldown = false;
 
     public Enemy(int X, int Y, PApplet c) {
         this.c = c;
@@ -28,13 +31,13 @@ public class Enemy {
         return ySize;
     }
 
-    // can't set different values in subclasses, so values are set here, 
+    // can't set different values in subclasses, so values are set here,
     // and then variables assigned to functions calls
     public int values(int value) {
         switch (value) {
             // health
             case 0:
-                return 1;
+                return 5;
             // colors
             case 1:
                 return 27;
@@ -60,7 +63,13 @@ public class Enemy {
     // finds direction between the character and the enemy, then makes the enemy
     // move along that vector.
     public void move(int charX, int charY) {
-
+        if (onCooldown) {
+            frames++;
+            if (frames >= iFrames) {
+                frames = 0;
+                onCooldown = false;
+            }
+        }
         position = new PVector(selfX, selfY);
 
         charXY = new PVector(charX, charY);
@@ -76,8 +85,19 @@ public class Enemy {
         c.fill(255);
     }
 
-    public void hit() {
-        health--;
+    public boolean hit(int damage, String type) {
+        if (onCooldown == false) {
+            if (type.equals("weapon")) {
+                health -= damage;
+            }
+        }
+        onCooldown = true;
+        if (health <=0 ) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     // gets pos of enemy to deal with in the App file.
@@ -91,4 +111,5 @@ public class Enemy {
         }
     }
 
+        
 }

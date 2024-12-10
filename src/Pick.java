@@ -6,7 +6,7 @@ public class Pick extends Tool {
         super(X, Y, c, "src/Assets/Pickaxe.png", "Pickaxe");
     }
     
-    public int getDamage() {
+    @Override public int getDamage() {
         return damage;
     }
 }

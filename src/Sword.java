@@ -6,5 +6,9 @@ public class Sword extends Tool {
         super(X, Y, c, "src/Assets/swords.png", "weapon");
 
     }
+    
+    @Override public int getDamage() {
+        return 5;
+    }
 
 }
