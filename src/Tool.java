@@ -31,51 +31,26 @@ public class Tool implements Tools {
 
     // chatGPT techanccly made this, but i had to panstakily get it poit of it step by step and the negative value handling i did myself.
     public boolean checkCollision(int enemyX, int enemyY, int enemyWidth, int enemyHeight) {
-        int x1Min = X;
-        int x1Max = X + xSize;
-        int y1Min = Y;
-        int y1Max = Y + ySize;
+        int x1Min = Math.min(X, X + xSize);
+        int x1Max = Math.max(X, X + xSize);
+        int y1Min = Math.min(Y, Y + ySize);
+        int y1Max = Math.max(Y, Y + ySize);
 
-        if (x1Min > x1Max) {
-            int temp = x1Min;
-            x1Min = x1Max;
-            x1Max = temp;
-        }
-        if (y1Min > y1Max) {
-            int temp = y1Min;
-            y1Min = y1Max;
-            y1Max = temp;
-        }
 
-        System.out.println("x1Min: " + x1Min + ", x1Max: " + x1Max + ", y1Min: " + y1Min + ", y1Max: " + y1Max);
+
+
 
         // Calculate bounds for Square 2
-        int x2Min = enemyX;
-        int x2Max = enemyX + enemyWidth;
-        int y2Min = enemyY;
-        int y2Max = enemyY + enemyHeight;
-
-        System.out.println("enemyX: " + enemyX + ", enemyY: " + enemyY + ", enemyWidth: " + enemyWidth + ", enemyHeight: " + enemyHeight);
-
-        System.out.println("x2Min: " + x2Min + ", x2Max: " + x2Max + ", y2Min: " + y2Min + ", y2Max: " + y2Max);
+        int x2Min = Math.min(enemyX, enemyX + enemyWidth);
+    int x2Max = Math.max(enemyX, enemyX + enemyWidth);
+    int y2Min = Math.min(enemyY, enemyY + enemyHeight);
+    int y2Max = Math.max(enemyY, enemyY + enemyHeight);
 
 
-
-        if (x2Min > x2Max) {
-            int temp = x2Min;
-            x2Min = x2Max;
-            x2Max = temp;
-        }
-        if (y2Min > y2Max) {
-            int temp = y2Min;
-            y2Min = y2Max;
-            y2Max = temp;
-        }
 
         boolean xOverlap = x1Max >= x2Min && x1Min <= x2Max;
         boolean yOverlap = y1Max >= y2Min && y1Min <= y2Max;
 
-        // System.out.println(xOverlap +" "+yOverlap);
 
         return xOverlap && yOverlap;
 
@@ -102,6 +77,7 @@ public class Tool implements Tools {
         this.lr = lr;
         this.ud = ud;
     }
+
 
     public void render() {
         if (ud == 0) {
@@ -139,10 +115,7 @@ public class Tool implements Tools {
 
     }
 
-    public void hide() {
-        X = Integer.MAX_VALUE;
-        Y = Integer.MAX_VALUE;
-    }
+    
 
     public String getType() {
         return type;

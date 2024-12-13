@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import Interfaces.Item;
 import processing.core.PApplet;
 
 public class Player {
@@ -14,7 +15,7 @@ public class Player {
     private boolean moveYNeg = false;
     private PApplet c;
     // private Sword sword;
-    private ArrayList<InventorySlot> inventory = new ArrayList<>();
+    private static ArrayList<InventorySlot> inventory = new ArrayList<>();
     private int inventorySlot = 1;
 
     public Player(int X, int Y, PApplet c) {
@@ -90,14 +91,32 @@ public class Player {
             c.image(slot.getImg(), 533f + 55 * slotNum, 907.5f, 35f, 35f);
             if (slot.getSlot() == inventorySlot) {
                 slot.getItem().render();
-            } else {
-                slot.getItem().hide();
+                if (App.swung) {
+                    if (slot.getItem() instanceof MaterialItem) {
+                    MaterialItem mat = (MaterialItem) slot.getItem();
+                    mat.place(X, Y);
+                    }
+                }
+
             }
             if (slot.getItem() instanceof Tool) {
                 Tool tool = (Tool) slot.getItem();
                 tool.setPlayerValues(X, Y, lr, ud);
+            } else if (slot.getItem() instanceof Item) {
+                Item item = (Item) slot.getItem();
+                item.setPlayerValues(X, Y, lr, ud);
+
             }
+            //chatGPT loaded the number,
+            int itemNum = slot.getNum();
+            c.fill(0); // Black text color
+            c.textSize(30); // Adjust size as needed
+            c.textAlign(PApplet.RIGHT, PApplet.BOTTOM); // Align text to bottom-right
+            c.text(itemNum, 577 + 55 * slotNum, 950); // Adjust position to bottom-right
+            
+
         }
+
     }
 
     public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
@@ -111,6 +130,17 @@ public class Player {
 
         }
         return false;
+    }
+
+    public static void addItem(Item item) {
+        for (InventorySlot slot : inventory) {
+            if (slot.getItem().getClass() == item.getClass()) {
+                slot.addItem();
+                return;
+            }
+        }
+
+        inventory.add(new InventorySlot(item, inventory.size(), 1));
     }
 
     public void swing() {

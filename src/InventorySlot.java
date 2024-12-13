@@ -21,6 +21,13 @@ public class InventorySlot {
         return img;
     }
 
+    public void addItem() {
+        num++;
+    }
+    public void remItem() {
+        num--;
+    }
+
     public void changeNum(int changeNum) {
         num += changeNum;
     }

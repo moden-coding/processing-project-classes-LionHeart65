@@ -28,7 +28,7 @@ public class App extends PApplet {
     static boolean swung;
     int swingTime = 15;
     int swingFrames = 0;
-    ArrayList<Obstacle> obstacles = new ArrayList<>();
+    static ArrayList<Obstacle> obstacles = new ArrayList<>();
     
 
     
@@ -58,15 +58,8 @@ public class App extends PApplet {
     // locations.
     public int[] randCoord() {
         int[] coords = new int[2];
-        if (random(1) > 0.5) {
-            float X = random(0, 50);
-            coords[0] = Math.round(X);
-        } else {
-            float X = random(width-50, width);
-            coords[0] = Math.round(X);
-        }
-        float Y = random(0, height);
-        coords[1] = Math.round(Y);
+        coords[0] = Math.round(random(50, width - 50)); // Ensure within visible bounds
+        coords[1] = Math.round(random(50, height - 50)); // Ensure within visible bounds
         return coords;
     }
 
@@ -99,19 +92,23 @@ public class App extends PApplet {
             }
         }
 
-
         if (num == 1) {
-            Enemies.add(new Enemy(500, 500, this));
+            Enemies.add(new Enemy(randCoord()[0], randCoord()[1], this));
+            Enemies.add(new Enemy(1000, 500, this));
+
             obstacles.add(new Rock(randCoord()[0], randCoord()[1], this));
+            obstacles.add(new Rock(randCoord()[0], randCoord()[1], this));
+
+            obstacles.add(new Rock(randCoord()[0], randCoord()[1], this));
+            obstacles.add(new Rock(randCoord()[0], randCoord()[1], this));
+
             num++;
         }
         
-        player.move();
 
         // handles all things enemy related
         for (int i = 0; i < Enemies.size(); i++) {
             Enemies.get(i).move(charX, charY);
-            System.out.println("Enemy X Position: " + Enemies.get(i).getPos('X') + ", Enemy Y Position: " + Enemies.get(i).getPos('Y'));
 
             // allows player to lose hp, if player is within 50 pixels and isn't
             // invincible
@@ -138,15 +135,25 @@ public class App extends PApplet {
             lostLife = false;
             iFrames = 0;
         }
+        ArrayList<Obstacle> broken = new ArrayList<>();
+
         for (Obstacle obs : obstacles) {
-            obs.render();
             if (swung && player.checkHit(obs.getX(), obs.getY(), obs.getXSize(), obs.getYSize())) {
-                System.out.println("swung");
                 Item item = player.getInventory().getItem();
-                obs.hit(item.getDamage(), item.getType());
+                if (obs.hit(item.getDamage(), item.getType())) {
+                    broken.add(obs);
+                }
             }
+            obs.render();
 
         }
+        obstacles.removeAll(broken);
+        player.move();
+
+    }
+
+    public static void addObs(Obstacle obs) {
+        obstacles.add(obs);
     }
 
     public void menu() {

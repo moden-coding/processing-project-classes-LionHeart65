@@ -4,8 +4,8 @@ import processing.core.PImage;
 public interface Item {
     void render();
     PImage getImg();
-    void hide();
     String getType();
     int getDamage();
+    void setPlayerValues(int X, int Y, int lr, int ud);
 }
 
