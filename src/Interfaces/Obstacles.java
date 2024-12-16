@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface Obstacle {
+public interface Obstacles {
     
     public void render();
     public boolean hit(int damage, String tool);

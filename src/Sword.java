@@ -11,4 +11,8 @@ public class Sword extends Tool {
         return 5;
     }
 
+    public String name() {
+        return "sword";
+    }
+
 }

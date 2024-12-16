@@ -2,7 +2,7 @@ import Interfaces.Tools;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Tool implements Tools {
+public abstract class Tool implements Tools {
     private int X;
     private int Y;
     private int playerX;
@@ -23,6 +23,7 @@ public class Tool implements Tools {
         this.type = type;
     }
 
+    public abstract String name();
 
     public int getDamage() {
         return 0;

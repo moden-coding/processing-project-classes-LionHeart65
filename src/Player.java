@@ -17,6 +17,9 @@ public class Player {
     // private Sword sword;
     private static ArrayList<InventorySlot> inventory = new ArrayList<>();
     private int inventorySlot = 1;
+    private int placeDelay = 60;
+    private int endFrame;
+    private boolean coolDown = false;
 
     public Player(int X, int Y, PApplet c) {
         this.X = X;
@@ -76,6 +79,10 @@ public class Player {
         c.ellipse(X - 3, Y + 10, 15, 15);
     }
 
+
+    public static ArrayList<InventorySlot> getInv() {
+        return inventory;
+    }
     public void loadInventory() {
         c.stroke(0);
         c.strokeWeight(3);
@@ -86,15 +93,30 @@ public class Player {
         c.rect(525 + 55 * inventorySlot, 900, 50, 50);
         c.strokeWeight(1);
 
+
+        ArrayList<InventorySlot> rem = new ArrayList<>();
+
         for (InventorySlot slot : inventory) {
             int slotNum = slot.getSlot();
             c.image(slot.getImg(), 533f + 55 * slotNum, 907.5f, 35f, 35f);
+            if (c.frameCount == endFrame) {
+                coolDown = false;
+            }
             if (slot.getSlot() == inventorySlot) {
                 slot.getItem().render();
-                if (App.swung) {
+                if (App.swung && !coolDown) {
                     if (slot.getItem() instanceof MaterialItem) {
                     MaterialItem mat = (MaterialItem) slot.getItem();
                     mat.place(X, Y);
+                    slot.remItem();
+                    System.out.println(slot.getNum());
+                    coolDown = true;
+                    endFrame = c.frameCount + placeDelay;
+                    if (slot.getNum() == 0) {
+                        rem.add(slot);
+                    }
+                    continue;
+
                     }
                 }
 
@@ -116,6 +138,7 @@ public class Player {
             
 
         }
+        inventory.removeAll(rem);
 
     }
 

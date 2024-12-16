@@ -9,4 +9,10 @@ public class Pick extends Tool {
     @Override public int getDamage() {
         return damage;
     }
+
+    public String name() {
+        return "pick";
+    }
+
+    
 }

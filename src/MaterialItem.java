@@ -4,7 +4,7 @@ import processing.core.PImage;
 
 public abstract class MaterialItem implements Interfaces.Item {
     private PImage img;
-    private PApplet c;
+    protected PApplet c;
     private int X;
     private int Y;
     private int playerX;
@@ -15,14 +15,14 @@ public abstract class MaterialItem implements Interfaces.Item {
     private int xSize;
 
     public abstract void place(int X, int Y);
-    public MaterialItem(PApplet c, String img, String code) {
-        System.out.println("Code: " + code + c);
+    public MaterialItem(PApplet c, String img) {
         this.c = c;
         this.img = c.loadImage(img);
         
 
     }
 
+    public abstract String name();
     public void setPlayerValues(int X, int Y, int lr, int ud) {
         playerX = X;
         playerY = Y;

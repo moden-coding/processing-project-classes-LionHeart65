@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 import Interfaces.Item;
-import Interfaces.Obstacle;
 import processing.core.PApplet;
 
 public class App extends PApplet {
@@ -15,7 +14,7 @@ public class App extends PApplet {
     float speedStat = 3; // raw speed of the player
     int bg = color(46, 89, 61);
     float shootAngle = 0;
-    int gameCode = 2; // what scene is the game on, 0 is menu, 1 is instructions, 2 is game
+    int gameCode = 0; // what scene is the game on, 0 is menu, 1 is instructions, 2 is game
     int hp = 100;
     ArrayList<Enemy> Enemies = new ArrayList<>();
     boolean moveXPos = false; // is the player moving in these directions
@@ -150,6 +149,13 @@ public class App extends PApplet {
         obstacles.removeAll(broken);
         player.move();
 
+        fill(255);
+        rect(width - 130, 20, 150, 50);
+        fill(0);
+        textSize(50);
+        text("Save", width - 25, 75);
+        fill(255);
+
     }
 
     public static void addObs(Obstacle obs) {
@@ -164,6 +170,14 @@ public class App extends PApplet {
         textSize(100);
         fill(0);
         text("Play", (width / 2) - 100, (height / 2) + 35);
+
+        fill(255);
+        rect(width/2 - 100, height/2 + 100, 210, 50);
+        fill(0);
+        textSize(50);
+        text("Load save", width/2 - 100, height/2 + 145);
+        fill(255);
+
 
     }
 
@@ -192,12 +206,20 @@ public class App extends PApplet {
     // handles when the mouse is clicked
     public void mouseClicked() {
         // different actions depending on what scene is active
+        System.out.println("X " + mouseX + " Y " + mouseY);
         if (gameCode == 0) {
             if (mouseX > 500 && mouseX < 1000 && mouseY > 400 && mouseY < 600) {
                 gameCode = 2; // starts game
+        } else if (mouseX > 650 && mouseX < 890 && mouseY > 600 && mouseY < 650) {
+            Loading.load(this);
+        }
+    }
+        if (gameCode == 2) {
+            if (mouseX > 1370 && mouseX < 1500 && mouseY >20 && mouseY < 70) {
+                Loading.save(Player.getInv(), obstacles, charX, charY);
             }
         }
-        System.out.println("X " + mouseX + " Y " + mouseY);
+
     }
 
     public static void main(String[] args) {

@@ -2,15 +2,15 @@ import Interfaces.Item;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public abstract class Obstacle implements Interfaces.Obstacle {
+public abstract class Obstacle implements Interfaces.Obstacles {
     private int X;
     private int Y;
     private int hp = 5;
     private PApplet c;
     private PImage img;
     private String breaktool = "Pickaxe";
-    private int xSize = 50;
-    private int ySize = 50;
+    private int xSize = 25;
+    private int ySize = 25;
     private int iFrames = 31;
     private int frames = 0;
     private boolean onCooldown = false;
@@ -62,6 +62,10 @@ public abstract class Obstacle implements Interfaces.Obstacle {
 
     }
 
+    public int getHP() {
+        return hp;
+    }
+
     public int getX() {
         return X;
     }
@@ -78,6 +82,10 @@ public abstract class Obstacle implements Interfaces.Obstacle {
     public int getYSize() {
         return ySize;
     }
+
+    public abstract String name();
+
+
 
     
 
