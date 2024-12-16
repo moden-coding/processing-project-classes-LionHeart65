@@ -166,6 +166,11 @@ public class Player {
         inventory.add(new InventorySlot(item, inventory.size(), 1));
     }
 
+    public static void setInventory(ArrayList<InventorySlot> inv) {
+        inventory = inv;
+    }
+
+
     public void swing() {
 
         

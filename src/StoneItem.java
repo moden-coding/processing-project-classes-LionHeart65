@@ -15,12 +15,12 @@ public class StoneItem extends MaterialItem {
             System.out.println("whyyyyy");
             System.exit(0);
         }
-        App.addObs(new Stone(X, Y, c));
+        App.addObs(new Stone(X, Y, c, 3));
         System.out.println("placed");
     }
 
     public String name() {
-        return "Stone";
+        return "stone";
     }
 
 }

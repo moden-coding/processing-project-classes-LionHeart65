@@ -5,7 +5,7 @@ import processing.core.PImage;
 public abstract class Obstacle implements Interfaces.Obstacles {
     private int X;
     private int Y;
-    private int hp = 5;
+    private int hp;
     private PApplet c;
     private PImage img;
     private String breaktool = "Pickaxe";
@@ -17,13 +17,14 @@ public abstract class Obstacle implements Interfaces.Obstacles {
     private Item dropItem;
 
 
-    public Obstacle(int X, int Y, PApplet c, Item dropItem, String breaktool, String img) {
+    public Obstacle(int X, int Y, PApplet c, Item dropItem, String breaktool, String img, int hp) {
         this.X = X;
         this.Y = Y;
         this.img = c.loadImage(img);
         this.c = c;
         this.breaktool = breaktool;
         this.dropItem = dropItem;
+        this.hp = hp;
     }
 
 
