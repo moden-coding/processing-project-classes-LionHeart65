@@ -14,7 +14,6 @@ public class Player {
     private boolean moveYPos = false;
     private boolean moveYNeg = false;
     private PApplet c;
-    // private Sword sword;
     private static ArrayList<InventorySlot> inventory = new ArrayList<>();
     private int inventorySlot = 1;
     private int placeDelay = 60;
@@ -31,6 +30,10 @@ public class Player {
         inventory.add(new InventorySlot(pickaxe, 1, 1));
     }
 
+    public void setCoords(int X, int Y) {
+        this.X = X;
+        this.Y = Y;
+    }
     public void move() {
         App.syncCoords(X, Y);
         // sword.setPlayerValues(X, Y, lr, ud);
@@ -109,7 +112,6 @@ public class Player {
                     MaterialItem mat = (MaterialItem) slot.getItem();
                     mat.place(X, Y);
                     slot.remItem();
-                    System.out.println(slot.getNum());
                     coolDown = true;
                     endFrame = c.frameCount + placeDelay;
                     if (slot.getNum() == 0) {

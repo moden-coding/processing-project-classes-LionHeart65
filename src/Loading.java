@@ -12,7 +12,7 @@ public class Loading {
 
     
     private static String saveFile = "src/save.bin";
-    
+
 
     public static void save(ArrayList<InventorySlot> inv, ArrayList<Obstacle> obstacles, int X, int Y) {
         File file = new File(saveFile);
@@ -29,6 +29,8 @@ public class Loading {
                 String newLine = String.format("%s,%s,%s,%s\n", obs.name(), obs.getX(), obs.getY(), obs.getHP());
                 writer.write(newLine);
             }
+            writer.write("Stats\n");
+            writer.write(X+","+Y+"\n");
         } catch (Exception e) {
             System.out.println("Error Saving");
             return;
@@ -45,7 +47,6 @@ public class Loading {
                 if (line.equals("Obstacles")) {
                     break;
                 }
-                System.out.println();
                 String[] data = line.split(",");
 
                 Item newItem;
@@ -61,7 +62,6 @@ public class Loading {
                     throw new Exception("unknown Item");
 
                 }
-                System.out.println(newItem);
                 newInv.add(new InventorySlot(newItem, Integer.valueOf(data[1]), Integer.valueOf(data[2])));
                 
             }
@@ -71,7 +71,6 @@ public class Loading {
                 if (line.equals("Stats")) {
                     break;
                 }
-                System.out.println();
                 String[] data = line.split(",");
 
                 Obstacle newObs;
@@ -88,10 +87,12 @@ public class Loading {
                     throw new Exception("unknown obstacle");
 
                 }
-                System.out.println(newObs);
                 newObstacles.add(newObs);
             }
             App.setObstacles(newObstacles);
+            String[] coords = scnr.nextLine().split(",");
+            App.setCoords(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));
+
         } catch (Exception e) {
             System.out.println("Error Loading: " + e);
             return;

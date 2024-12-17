@@ -10,13 +10,7 @@ public class StoneItem extends MaterialItem {
 
     
     public void place(int X, int Y) {
-        System.out.println(c);
-        if (c == null) {
-            System.out.println("whyyyyy");
-            System.exit(0);
-        }
         App.addObs(new Stone(X, Y, c, 3));
-        System.out.println("placed");
     }
 
     public String name() {

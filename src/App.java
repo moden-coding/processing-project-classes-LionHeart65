@@ -5,7 +5,7 @@ import processing.core.PApplet;
 
 public class App extends PApplet {
 
-    Player player;
+    static Player player;
     static int charX = 0;
     static int charY = 0;
     int lr = 1; // is char facing left or right, 1 is right, -1 is left
@@ -28,6 +28,7 @@ public class App extends PApplet {
     int swingTime = 15;
     int swingFrames = 0;
     static ArrayList<Obstacle> obstacles = new ArrayList<>();
+    int saveTime = 1800;
     
 
     
@@ -49,6 +50,7 @@ public class App extends PApplet {
         charY = height / 2;
         background(bg);
         player = new Player(width / 2, height / 2, this);
+        Loading.load(this);
     }
     static int num = 1;
 
@@ -65,8 +67,11 @@ public class App extends PApplet {
         coords[1] = Math.round(random(50, height - 50)); // Ensure within visible bounds
         return coords;
     }
+    
+    public static void setCoords(int X, int Y) {
+        player.setCoords(X, Y);
+    }
 
-;
     public void draw() {
         // decides which scene to show based on game code value.
         switch (gameCode) {
@@ -85,8 +90,11 @@ public class App extends PApplet {
     }
     // main game function, where the playing happens. 1
     public void play() {
-        background(bg);
 
+        background(bg);
+        if (frameCount % saveTime == 0) {
+            Loading.save(Player.getInv(), obstacles, charX, charY);
+        }
         if (hp <= 0) {
             
         }
@@ -175,13 +183,6 @@ public class App extends PApplet {
         text("Play", (width / 2) - 100, (height / 2) + 35);
 
         fill(255);
-        rect(width/2 - 100, height/2 + 100, 210, 50);
-        fill(0);
-        textSize(50);
-        text("Load save", width/2 - 100, height/2 + 145);
-        fill(255);
-
-        fill(255);
         rect(width/2 - 100, height/2 + 150, 210, 50);
         fill(0);
         textSize(50);
@@ -217,9 +218,7 @@ public class App extends PApplet {
         if (gameCode == 0) {
             if (mouseX > 500 && mouseX < 1000 && mouseY > 400 && mouseY < 600) {
                 gameCode = 2; // starts game
-        } else if (mouseX > 650 && mouseX < 890 && mouseY > 600 && mouseY < 650) {
-            Loading.load(this);
-        } else if (mouseX > 700 && mouseX < 890 && mouseY > 650 && mouseY < 700) {
+        }   else if (mouseX > 700 && mouseX < 890 && mouseY > 650 && mouseY < 700) {
             Loading.reset(this);
         }
     }

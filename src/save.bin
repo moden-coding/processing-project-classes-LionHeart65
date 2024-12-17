@@ -1,8 +1,10 @@
 Inventory
 sword,0,1
 pick,1,1
-stone,2,1
 Obstacles
-rock,1417,385,5
-stone,396,358,3
-stone,171,505,3
+rock,232,814,5
+stone,1204,653,3
+stone,972,288,3
+stone,585,108,3
+Stats
+501,108
