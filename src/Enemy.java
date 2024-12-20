@@ -1,7 +1,7 @@
 
 import processing.core.PApplet;
 import processing.core.PVector;
-
+//commented
 public class Enemy {
     private PVector position = new PVector(0, 0); // current pos.
     private PVector charXY; // pos of player
@@ -13,7 +13,7 @@ public class Enemy {
     private int[] colors = { values(1), values(2), values(3) }; // color of enemies. should be static?
     private int xSize = values(4);
     private int ySize = values(5);
-    private int iFrames = 31;
+    private int iFrames = 31; // stops the enemy from dying in a few frames
     private int frames = 0;
     private boolean onCooldown = false;
 
@@ -29,6 +29,23 @@ public class Enemy {
     }
     public int getYSize() {
         return ySize;
+    }
+
+    public void moveBack(int num) {
+        //if hits an obstacle
+        if (num % 2 == 0) {
+            if (num % 4 == 0) {
+                selfX += 1;
+            } else {
+                selfX -= 1;
+            }
+        } else {
+            if (num % 3 == 0) {
+                selfY += 1;
+            } else {
+                selfX -= 1;
+            }
+        }
     }
 
     // can't set different values in subclasses, so values are set here,
@@ -80,9 +97,7 @@ public class Enemy {
         position.add(direction);
         selfX = position.x;
         selfY = position.y;
-        c.fill(colors[0], colors[1], colors[2]);
-        c.rect(selfX, selfY, 10, 40);
-        c.fill(255);
+        
     }
 
     public boolean hit(int damage, String type) {
@@ -100,6 +115,11 @@ public class Enemy {
 
     }
 
+    public void render() {
+        c.fill(colors[0], colors[1], colors[2]);
+        c.rect(selfX, selfY, 10, 40);
+        c.fill(255);
+    }
     // gets pos of enemy to deal with in the App file.
     public int getPos(char axis) {
         if (axis == 'X') {

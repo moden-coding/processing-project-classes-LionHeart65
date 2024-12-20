@@ -30,6 +30,7 @@ public class Player {
         inventory.add(new InventorySlot(pickaxe, 1, 1));
     }
 
+
     public void setCoords(int X, int Y) {
         this.X = X;
         this.Y = Y;

@@ -31,6 +31,9 @@ public class Loading {
             }
             writer.write("Stats\n");
             writer.write(X+","+Y+"\n");
+            writer.write(App.getHP() + "\n");
+            writer.write(App.getHighScore() + "\n");
+            writer.write(App.getDay() + "\n");
         } catch (Exception e) {
             System.out.println("Error Saving");
             return;
@@ -92,7 +95,9 @@ public class Loading {
             App.setObstacles(newObstacles);
             String[] coords = scnr.nextLine().split(",");
             App.setCoords(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));
-
+            App.setHP(scnr.nextInt());
+            App.setHighScore(scnr.nextInt());
+            App.setDay(scnr.nextInt());
         } catch (Exception e) {
             System.out.println("Error Loading: " + e);
             return;
@@ -106,12 +111,24 @@ public class Loading {
         newInv.add(new InventorySlot(new Pick(0, 0, c), 1, 1));
 
         Player.setInventory(newInv);
+        App.hp = 100;
+        c.Enemies.clear();
+        for (int i = 0; i < 10; i++) {
+            newObs.add(new Rock(c.randCoord()[0], c.randCoord()[1], c, 5));
 
-        newObs.add(new Rock(c.randCoord()[0], c.randCoord()[1], c, 5));
-        newObs.add(new Rock(c.randCoord()[0], c.randCoord()[1], c, 5));
-        newObs.add(new Rock(c.randCoord()[0], c.randCoord()[1], c, 5));
-        newObs.add(new Rock(c.randCoord()[0], c.randCoord()[1], c, 5));
+        }
         App.setObstacles(newObs);
+
+        if (App.highScore < App.dayNum) {
+            App.highScore = App.dayNum;
+        }
+        App.dayNum = 0;
+        c.day = true;
+        c.timeCounter = 0;
+        c.dayTime = 0;
+        c.nightTime = 0;
+        c.spawnTimer = 1;
+
         Loading.save(newInv, newObs, c.width / 2, c.height/2);
 
     }
