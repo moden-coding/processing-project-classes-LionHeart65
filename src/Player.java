@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import Interfaces.Item;
 import processing.core.PApplet;
-
+//commented
 public class Player {
     private int X;
     private int Y;
@@ -36,8 +36,7 @@ public class Player {
         this.Y = Y;
     }
     public void move() {
-        App.syncCoords(X, Y);
-        // sword.setPlayerValues(X, Y, lr, ud);
+        App.syncCoords(X, Y); // tells App where the player is
         // Update position based on movement states
         if (moveXPos) {
             X += speed;
@@ -58,6 +57,7 @@ public class Player {
             speed = 3;
         }
 
+        // displays player diffrently depending on the orientation
         if (ud == 0) {
             lrPlayer();
         } else {
@@ -67,7 +67,7 @@ public class Player {
     }
 
     public void lrPlayer() {
-        // Draw the player
+        // Draw the player if its moving left or right
         c.fill(145, 125, 80);
         c.rect(X, Y, 20, 50);
         c.fill(181, 167, 91);
@@ -76,7 +76,7 @@ public class Player {
     }
 
     public void udPlayer() {
-        // Draw the player
+        // Draw the player if its moving up or down
         c.fill(145, 125, 80);
         c.rect(X, Y, 50, 20);
         c.fill(181, 167, 91);
@@ -90,10 +90,12 @@ public class Player {
     public void loadInventory() {
         c.stroke(0);
         c.strokeWeight(3);
+        // displays the boxes
         for (int i = 0; i < 9; i++) {
             c.rect(525 + 55 * i, 900, 50, 50);
         }
-        c.fill(179, 169, 116);
+        c.fill(209, 198, 142);
+        //makes the selected slot lighter
         c.rect(525 + 55 * inventorySlot, 900, 50, 50);
         c.strokeWeight(1);
 
@@ -101,6 +103,7 @@ public class Player {
         ArrayList<InventorySlot> rem = new ArrayList<>();
 
         for (InventorySlot slot : inventory) {
+            //loads the inventory slots with items in them, runs the functions to get them working
             int slotNum = slot.getSlot();
             c.image(slot.getImg(), 533f + 55 * slotNum, 907.5f, 35f, 35f);
             if (c.frameCount == endFrame) {
@@ -110,6 +113,7 @@ public class Player {
                 slot.getItem().render();
                 if (App.swung && !coolDown) {
                     if (slot.getItem() instanceof MaterialItem) {
+                        //allows the code to place materials
                     MaterialItem mat = (MaterialItem) slot.getItem();
                     mat.place(X, Y);
                     slot.remItem();
@@ -124,10 +128,8 @@ public class Player {
                 }
 
             }
-            if (slot.getItem() instanceof Tool) {
-                Tool tool = (Tool) slot.getItem();
-                tool.setPlayerValues(X, Y, lr, ud);
-            } else if (slot.getItem() instanceof Item) {
+            // tells the tool where the player is
+            if (slot.getItem() instanceof Item) {
                 Item item = (Item) slot.getItem();
                 item.setPlayerValues(X, Y, lr, ud);
 
@@ -141,15 +143,16 @@ public class Player {
             
 
         }
-        inventory.removeAll(rem);
+        inventory.removeAll(rem); // removes item from inventory if none are left
 
     }
 
     public boolean checkHit(int X, int Y, int enemyX, int enemyY) {
+        // checks if the player has hit an obstacle or enemy
         if (inventory.size() - 1 >= inventorySlot) {
             if (inventory.get(inventorySlot).getItem() instanceof Interfaces.Tools) {
                 
-                Interfaces.Tools tool = (Interfaces.Tools) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thingw  
+                Interfaces.Tools tool = (Interfaces.Tools) inventory.get(inventorySlot).getItem(); // chatGPT made  the casting thing
                 return tool.checkCollision(X, Y, enemyX, enemyY);
             }
             return false;
@@ -159,6 +162,7 @@ public class Player {
     }
 
     public static void addItem(Item item) {
+        // adds items to inventory if there are none left, else adds another one
         for (InventorySlot slot : inventory) {
             if (slot.getItem().getClass() == item.getClass()) {
                 slot.addItem();
@@ -175,8 +179,7 @@ public class Player {
 
 
     public void swing() {
-
-        
+        //swings when hit
             App.swing();
     }
 

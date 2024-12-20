@@ -35,7 +35,7 @@ public class App extends PApplet {
     int timeCounter = 0; // current time since beginning of day/night
     static int dayNum = 0;
     int daySpawns = 1; // how many spawns per day
-    int spawnTimer = 0; // the time between each spawn
+    int spawnTimer = 1; // the time between each spawn
 
     public static void swing() {
         swung = true;

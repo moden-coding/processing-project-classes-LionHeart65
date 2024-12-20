@@ -32,7 +32,7 @@ public class Enemy {
     }
 
     public void moveBack(int num) {
-        //if hits an obstacle
+        //if hits an obstacle, moves back a bit so its not stuck, random because doesn't know what side its hitting
         if (num % 2 == 0) {
             if (num % 4 == 0) {
                 selfX += 1;
@@ -63,6 +63,7 @@ public class Enemy {
             case 3:
                 return 4;
             // need to return something
+            //x and y sizes
             case 4:
                 return 10;
             case 5:
@@ -101,13 +102,14 @@ public class Enemy {
     }
 
     public boolean hit(int damage, String type) {
+        // if enemy is hit, removes health, returns true if the enemy has died
         if (onCooldown == false) {
             if (type.equals("weapon")) {
                 health -= damage;
             }
         }
         onCooldown = true;
-        if (health <=0 ) {
+        if (health <= 0 ) {
             return true;
         } else {
             return false;
@@ -116,6 +118,7 @@ public class Enemy {
     }
 
     public void render() {
+        // displays the enemy
         c.fill(colors[0], colors[1], colors[2]);
         c.rect(selfX, selfY, 10, 40);
         c.fill(255);

@@ -7,13 +7,14 @@ import java.util.Scanner;
 import Interfaces.Item;
 import processing.core.PApplet;
 
-
+// commentented
 public class Loading {
 
     
     private static String saveFile = "src/save.bin";
 
 
+    //saves everything to the file
     public static void save(ArrayList<InventorySlot> inv, ArrayList<Obstacle> obstacles, int X, int Y) {
         File file = new File(saveFile);
         file.delete();
