@@ -2,6 +2,7 @@ import Interfaces.Item;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+
 public abstract class Obstacle implements Interfaces.Obstacles {
     private int X;
     private int Y;
@@ -28,7 +29,6 @@ public abstract class Obstacle implements Interfaces.Obstacles {
     }
 
 
-    int num = 0;
     public void render() {
         
         if (onCooldown) {
@@ -48,6 +48,7 @@ public abstract class Obstacle implements Interfaces.Obstacles {
         }
     }
 
+    //what happens when the obstacle is hit, returns true if the obstacle is destroyed.
     public boolean hit(int damage, String tool) {
         if (onCooldown == false && breaktool.equals(tool)) {
 
@@ -83,11 +84,5 @@ public abstract class Obstacle implements Interfaces.Obstacles {
     public int getYSize() {
         return ySize;
     }
-
-    public abstract String name();
-
-
-
-    
 
 }

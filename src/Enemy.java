@@ -1,7 +1,7 @@
 
 import processing.core.PApplet;
 import processing.core.PVector;
-//commented
+
 public class Enemy {
     private PVector position = new PVector(0, 0); // current pos.
     private PVector charXY; // pos of player

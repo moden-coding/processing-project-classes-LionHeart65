@@ -2,7 +2,6 @@ import processing.core.PApplet;
 
 
 public class StoneItem extends MaterialItem {
-    // private PApplet c;
     public StoneItem(PApplet c) {
         super(c, "src/Assets/stone.jpeg");
 

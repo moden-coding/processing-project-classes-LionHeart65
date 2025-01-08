@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import Interfaces.Item;
 import processing.core.PApplet;
-//commented
+
 public class Player {
     private int X;
     private int Y;

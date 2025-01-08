@@ -8,4 +8,5 @@ public interface Obstacles {
     public int getY();
     public int getXSize();
     public int getYSize();
+    public String name();
 }

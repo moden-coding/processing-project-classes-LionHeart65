@@ -8,5 +8,6 @@ public interface Item {
     int getDamage();
     void setPlayerValues(int X, int Y, int lr, int ud);
     String name();
+    
 }
 

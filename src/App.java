@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 import Interfaces.Item;
 import processing.core.PApplet;
-// commenting
 public class App extends PApplet {
 
     static Player player;
@@ -115,6 +114,7 @@ public class App extends PApplet {
                     // makes the spawns go up every three days
                     daySpawns += Math.ceil(dayNum / 5);
                     spawnTimer = nightTime / daySpawns;
+
                 }
                 if (dayNum % 10 == 0) {
                     // adds new obstacles every 10 days

@@ -22,8 +22,8 @@ public abstract class MaterialItem implements Interfaces.Item {
 
     }
 
-    public abstract String name();
     public void setPlayerValues(int X, int Y, int lr, int ud) {
+        //tells the item where the player is
         playerX = X;
         playerY = Y;
         this.lr = lr;

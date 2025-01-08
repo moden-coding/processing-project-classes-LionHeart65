@@ -7,11 +7,11 @@ import java.util.Scanner;
 import Interfaces.Item;
 import processing.core.PApplet;
 
-// commentented
+
 public class Loading {
 
     
-    private static String saveFile = "src/save.bin";
+    private static String saveFile = "src/save.csv";
 
 
     //saves everything to the file
@@ -19,6 +19,7 @@ public class Loading {
         File file = new File(saveFile);
         file.delete();
         try (FileWriter writer = new FileWriter(saveFile)) {
+            //saves everything to the file, with headers to separate them by category.
             writer.write("Inventory\n");
             for (InventorySlot slot : inv) {
                 String newLine = String.format("%s,%s,%s\n", slot.getItem().name(), slot.getSlot(), slot.getNum());
@@ -41,11 +42,13 @@ public class Loading {
         }
     }
 
+    //loads from the save file
     public static void load(PApplet c) {
         try (Scanner scnr = new Scanner(Paths.get(saveFile))) {
             ArrayList<InventorySlot> newInv = new ArrayList<>();
             ArrayList<Obstacle> newObstacles = new ArrayList<>();
-            scnr.nextLine();
+            scnr.nextLine(); //skips first line
+            //reads everthing from the file, changing the method of loading when the header changes
             while (scnr.hasNextLine()) {
                 String line = scnr.nextLine();
                 if (line.equals("Obstacles")) {
@@ -105,6 +108,7 @@ public class Loading {
         }
     }
 
+    //resets the active game to a new random copy
     public static void reset(App c) {
         ArrayList<InventorySlot> newInv = new ArrayList<>();
         ArrayList<Obstacle> newObs =  new ArrayList<>();
@@ -126,11 +130,11 @@ public class Loading {
         App.dayNum = 0;
         c.day = true;
         c.timeCounter = 0;
-        c.dayTime = 0;
-        c.nightTime = 0;
         c.spawnTimer = 1;
 
-        Loading.save(newInv, newObs, c.width / 2, c.height/2);
+
+        Loading.save(newInv, newObs, c.width / 2, c.height/2); //saves new random game
+        
 
     }
 }

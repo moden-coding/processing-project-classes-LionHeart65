@@ -23,44 +23,34 @@ public abstract class Tool implements Tools {
         this.type = type;
     }
 
-    public abstract String name();
-
     public int getDamage() {
         return 0;
     }
 
 
-    // chatGPT techanccly made this, but i had to panstakily get it poit of it step by step and the negative value handling i did myself.
+    // chatGPT technically made this, but i had to painstaking tell it step by step and the negative value handling i did myself.
     public boolean checkCollision(int enemyX, int enemyY, int enemyWidth, int enemyHeight) {
         int x1Min = Math.min(X, X + xSize);
         int x1Max = Math.max(X, X + xSize);
         int y1Min = Math.min(Y, Y + ySize);
         int y1Max = Math.max(Y, Y + ySize);
 
-
-
-
-
         // Calculate bounds for Square 2
         int x2Min = Math.min(enemyX, enemyX + enemyWidth);
-    int x2Max = Math.max(enemyX, enemyX + enemyWidth);
-    int y2Min = Math.min(enemyY, enemyY + enemyHeight);
-    int y2Max = Math.max(enemyY, enemyY + enemyHeight);
-
-
+        int x2Max = Math.max(enemyX, enemyX + enemyWidth);
+        int y2Min = Math.min(enemyY, enemyY + enemyHeight);
+        int y2Max = Math.max(enemyY, enemyY + enemyHeight);
 
         boolean xOverlap = x1Max >= x2Min && x1Min <= x2Max;
         boolean yOverlap = y1Max >= y2Min && y1Min <= y2Max;
 
-
         return xOverlap && yOverlap;
-
-
     }
 
 
 
     private void setValues(int X, int Y, int width, int height) {
+        //tells the tool where to render
         this.X = X;
         this.Y = Y;
         xSize = width;
@@ -73,6 +63,7 @@ public abstract class Tool implements Tools {
     }
 
     public void setPlayerValues(int X, int Y, int lr, int ud) {
+        //tells the tool where the player is
         playerX = X;
         playerY = Y;
         this.lr = lr;
@@ -112,8 +103,6 @@ public abstract class Tool implements Tools {
         }
 
         c.image(img, X, Y, xSize, ySize);
-        // c.rect(X, Y, xSize, ySize);
-
     }
 
     

@@ -1,11 +1,11 @@
 import Interfaces.Item;
 import processing.core.PImage;
-// commented
+
 public class InventorySlot {
     //data type for an inventory slot, allows getting the items, the slots, all functions of items.
     private Item Item;
     private int slot;
-    private int num;
+    private int num; //amount of the item
     private PImage img;
 
     public InventorySlot(Item item, int slot, int num) {
